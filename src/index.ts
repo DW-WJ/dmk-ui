@@ -92,6 +92,12 @@ import DPageHeader from './components/DPageHeader.vue'
 import DTour from './components/DTour.vue'
 import DSplitter from './components/DSplitter.vue'
 import DSplitterPanel from './components/DSplitterPanel.vue'
+import DMention from './components/DMention.vue'
+import DCarousel from './components/DCarousel.vue'
+import DCarouselItem from './components/DCarouselItem.vue'
+import DInfiniteScroll from './components/DInfiniteScroll.vue'
+import DDateTimePicker from './components/DDateTimePicker.vue'
+import { vInfiniteScroll } from './directives/infiniteScroll'
 import { Notification, showNotification } from './notification'
 import type { NotificationOptions, NotificationType } from './notification'
 import { MessageBox, closeAllMessageBoxes } from './messagebox'
@@ -184,6 +190,12 @@ export {
   DTour,
   DSplitter,
   DSplitterPanel,
+  DMention,
+  DCarousel,
+  DCarouselItem,
+  DInfiniteScroll,
+  DDateTimePicker,
+  vInfiniteScroll,
   Notification,
   showNotification,
   MessageBox,
@@ -216,7 +228,10 @@ export type { CascaderOption } from './components/DCascader.vue'
 // 批 9 新组件的公共类型
 export type { TourStep, TourPlacement } from './lib/tour'
 export type { AnchorItem, AnchorRegistry } from './lib/anchor'
-export type { SplitterRegistry } from './lib/splitter'
+export type { SplitterRegistry, SplitterPanelHandle } from './lib/splitter'
+export type { MentionOption, MentionProps } from './lib/mention'
+export type { CarouselRegistry } from './lib/carousel'
+export type { InfiniteScrollOptions } from './lib/infinite-scroll'
 
 const components: [string, unknown][] = [
   ['DAlert', DAlert],
@@ -302,6 +317,11 @@ const components: [string, unknown][] = [
   ['DTour', DTour],
   ['DSplitter', DSplitter],
   ['DSplitterPanel', DSplitterPanel],
+  ['DMention', DMention],
+  ['DCarousel', DCarousel],
+  ['DCarouselItem', DCarouselItem],
+  ['DInfiniteScroll', DInfiniteScroll],
+  ['DDateTimePicker', DDateTimePicker],
 ]
 
 export const DmkUI: Plugin = {
