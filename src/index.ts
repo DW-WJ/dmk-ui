@@ -77,6 +77,13 @@ import DSpace from './components/DSpace.vue'
 import DScrollbar from './components/DScrollbar.vue'
 import DConfigProvider from './components/DConfigProvider.vue'
 import DLoading from './components/DLoading.vue'
+import DTree from './components/DTree.vue'
+import TreeNodeItem from './components/TreeNodeItem.vue'
+import DTreeSelect from './components/DTreeSelect.vue'
+import DCascader from './components/DCascader.vue'
+import DColorPicker from './components/DColorPicker.vue'
+import DImage from './components/DImage.vue'
+import DWatermark from './components/DWatermark.vue'
 import { Notification, showNotification } from './notification'
 import type { NotificationOptions, NotificationType } from './notification'
 import { MessageBox, closeAllMessageBoxes } from './messagebox'
@@ -154,6 +161,13 @@ export {
   DScrollbar,
   DConfigProvider,
   DLoading,
+  DTree,
+  TreeNodeItem,
+  DTreeSelect,
+  DCascader,
+  DColorPicker,
+  DImage,
+  DWatermark,
   Notification,
   showNotification,
   MessageBox,
@@ -178,6 +192,10 @@ export type { TimelineItem } from './components/DTimeline.vue'
 export type { DropdownItem } from './components/DDropdown.vue'
 export type { MenuItem } from './components/DMenu.vue'
 export type { StepItem } from './components/DSteps.vue'
+
+// 批 8 新组件的公共类型（业务侧可直接复用）
+export type { TreeNode, TreeNodeData, TreeProps } from './lib/tree'
+export type { CascaderOption } from './components/DCascader.vue'
 
 const components: [string, unknown][] = [
   ['DAlert', DAlert],
@@ -249,6 +267,12 @@ const components: [string, unknown][] = [
   ['DScrollbar', DScrollbar],
   ['DConfigProvider', DConfigProvider],
   ['DLoading', DLoading],
+  ['DTree', DTree],
+  ['DTreeSelect', DTreeSelect],
+  ['DCascader', DCascader],
+  ['DColorPicker', DColorPicker],
+  ['DImage', DImage],
+  ['DWatermark', DWatermark],
 ]
 
 export const DmkUI: Plugin = {
