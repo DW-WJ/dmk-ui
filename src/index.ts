@@ -84,6 +84,14 @@ import DCascader from './components/DCascader.vue'
 import DColorPicker from './components/DColorPicker.vue'
 import DImage from './components/DImage.vue'
 import DWatermark from './components/DWatermark.vue'
+import DAffix from './components/DAffix.vue'
+import DAnchor from './components/DAnchor.vue'
+import DAnchorLink from './components/DAnchorLink.vue'
+import DBacktop from './components/DBacktop.vue'
+import DPageHeader from './components/DPageHeader.vue'
+import DTour from './components/DTour.vue'
+import DSplitter from './components/DSplitter.vue'
+import DSplitterPanel from './components/DSplitterPanel.vue'
 import { Notification, showNotification } from './notification'
 import type { NotificationOptions, NotificationType } from './notification'
 import { MessageBox, closeAllMessageBoxes } from './messagebox'
@@ -168,6 +176,14 @@ export {
   DColorPicker,
   DImage,
   DWatermark,
+  DAffix,
+  DAnchor,
+  DAnchorLink,
+  DBacktop,
+  DPageHeader,
+  DTour,
+  DSplitter,
+  DSplitterPanel,
   Notification,
   showNotification,
   MessageBox,
@@ -196,6 +212,11 @@ export type { StepItem } from './components/DSteps.vue'
 // 批 8 新组件的公共类型（业务侧可直接复用）
 export type { TreeNode, TreeNodeData, TreeProps } from './lib/tree'
 export type { CascaderOption } from './components/DCascader.vue'
+
+// 批 9 新组件的公共类型
+export type { TourStep, TourPlacement } from './lib/tour'
+export type { AnchorItem, AnchorRegistry } from './lib/anchor'
+export type { SplitterRegistry } from './lib/splitter'
 
 const components: [string, unknown][] = [
   ['DAlert', DAlert],
@@ -273,6 +294,14 @@ const components: [string, unknown][] = [
   ['DColorPicker', DColorPicker],
   ['DImage', DImage],
   ['DWatermark', DWatermark],
+  ['DAffix', DAffix],
+  ['DAnchor', DAnchor],
+  ['DAnchorLink', DAnchorLink],
+  ['DBacktop', DBacktop],
+  ['DPageHeader', DPageHeader],
+  ['DTour', DTour],
+  ['DSplitter', DSplitter],
+  ['DSplitterPanel', DSplitterPanel],
 ]
 
 export const DmkUI: Plugin = {
