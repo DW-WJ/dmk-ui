@@ -97,6 +97,11 @@ import DCarousel from './components/DCarousel.vue'
 import DCarouselItem from './components/DCarouselItem.vue'
 import DInfiniteScroll from './components/DInfiniteScroll.vue'
 import DDateTimePicker from './components/DDateTimePicker.vue'
+import DColorPickerPanel from './components/DColorPickerPanel.vue'
+import DDatePickerPanel from './components/DDatePickerPanel.vue'
+import DSelectV2 from './components/DSelectV2.vue'
+import DTableV2 from './components/DTableV2.vue'
+import DTreeV2 from './components/DTreeV2.vue'
 import { vInfiniteScroll } from './directives/infiniteScroll'
 import { Notification, showNotification } from './notification'
 import type { NotificationOptions, NotificationType } from './notification'
@@ -195,6 +200,11 @@ export {
   DCarouselItem,
   DInfiniteScroll,
   DDateTimePicker,
+  DColorPickerPanel,
+  DDatePickerPanel,
+  DSelectV2,
+  DTableV2,
+  DTreeV2,
   vInfiniteScroll,
   Notification,
   showNotification,
@@ -232,6 +242,10 @@ export type { SplitterRegistry, SplitterPanelHandle } from './lib/splitter'
 export type { MentionOption, MentionProps } from './lib/mention'
 export type { CarouselRegistry } from './lib/carousel'
 export type { InfiniteScrollOptions } from './lib/infinite-scroll'
+
+// 批 11 虚拟化系列与面板的公共类型
+export type { VirtualRange, VirtualCalcOptions, VirtualListState } from './lib/virtual-list'
+export type { ColorFormat, Rgba } from './lib/color'
 
 const components: [string, unknown][] = [
   ['DAlert', DAlert],
@@ -322,6 +336,11 @@ const components: [string, unknown][] = [
   ['DCarouselItem', DCarouselItem],
   ['DInfiniteScroll', DInfiniteScroll],
   ['DDateTimePicker', DDateTimePicker],
+  ['DColorPickerPanel', DColorPickerPanel],
+  ['DDatePickerPanel', DDatePickerPanel],
+  ['DSelectV2', DSelectV2],
+  ['DTableV2', DTableV2],
+  ['DTreeV2', DTreeV2],
 ]
 
 export const DmkUI: Plugin = {

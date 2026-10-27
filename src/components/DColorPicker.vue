@@ -12,15 +12,16 @@
  *      预置色 + HEX/RGB 输入。
  */
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
-
-type ColorFormat = 'hex' | 'rgb' | 'hsl'
-
-interface Rgba {
-  r: number
-  g: number
-  b: number
-  a: number
-}
+import {
+  formatColor as format,
+  hslToRgb,
+  parseColor,
+  rgbFromHsv,
+  rgbToHsl,
+  toHex,
+  type ColorFormat,
+  type Rgba
+} from '../lib/color'
 
 const props = withDefaults(
   defineProps<{
@@ -64,121 +65,6 @@ const emit = defineEmits<{
 
 /* ---------------- 颜色解析 ---------------- */
 
-function parseColor(input: string): Rgba {
-  const s = (input ?? '').trim()
-  if (!s) return { r: 0, g: 0, b: 0, a: 1 }
-
-  // #rgb / #rrggbb / #rrggbbaa
-  if (s.startsWith('#')) {
-    const hex = s.slice(1)
-    if (hex.length === 3 || hex.length === 4) {
-      const r = parseInt(hex[0] + hex[0], 16)
-      const g = parseInt(hex[1] + hex[1], 16)
-      const b = parseInt(hex[2] + hex[2], 16)
-      const a = hex.length === 4 ? parseInt(hex[3] + hex[3], 16) / 255 : 1
-      return { r, g, b, a }
-    }
-    if (hex.length === 6 || hex.length === 8) {
-      const r = parseInt(hex.slice(0, 2), 16)
-      const g = parseInt(hex.slice(2, 4), 16)
-      const b = parseInt(hex.slice(4, 6), 16)
-      const a = hex.length === 8 ? parseInt(hex.slice(6, 8), 16) / 255 : 1
-      return { r, g, b, a }
-    }
-    return { r: 0, g: 0, b: 0, a: 1 }
-  }
-
-  // rgb(...) / rgba(...)
-  const rgbMatch = s.match(/^rgba?\(([^)]+)\)$/i)
-  if (rgbMatch) {
-    const parts = rgbMatch[1].split(',').map((p) => p.trim())
-    return {
-      r: Number(parts[0]) || 0,
-      g: Number(parts[1]) || 0,
-      b: Number(parts[2]) || 0,
-      a: parts[3] !== undefined ? Number(parts[3]) : 1
-    }
-  }
-
-  // hsl(...) / hsla(...)
-  const hslMatch = s.match(/^hsla?\(([^)]+)\)$/i)
-  if (hslMatch) {
-    const parts = hslMatch[1].split(',').map((p) => p.trim())
-    const h = parseFloat(parts[0]) || 0
-    const l = parseFloat(parts[1]) || 0
-    const sat = parseFloat(parts[2]) || 0
-    const a = parts[3] !== undefined ? Number(parts[3]) : 1
-    return { ...hslToRgb(h, sat / 100, l / 100), a }
-  }
-
-  return { r: 0, g: 0, b: 0, a: 1 }
-}
-
-function hslToRgb(h: number, s: number, l: number): { r: number; g: number; b: number } {
-  const c = (1 - Math.abs(2 * l - 1)) * s
-  const hp = (((h % 360) + 360) % 360) / 60
-  const x = c * (1 - Math.abs((hp % 2) - 1))
-  let r = 0
-  let g = 0
-  let b = 0
-  if (hp < 1) [r, g, b] = [c, x, 0]
-  else if (hp < 2) [r, g, b] = [x, c, 0]
-  else if (hp < 3) [r, g, b] = [0, c, x]
-  else if (hp < 4) [r, g, b] = [0, x, c]
-  else if (hp < 5) [r, g, b] = [x, 0, c]
-  else [r, g, b] = [c, 0, x]
-  const m = l - c / 2
-  return {
-    r: Math.round((r + m) * 255),
-    g: Math.round((g + m) * 255),
-    b: Math.round((b + m) * 255)
-  }
-}
-
-function rgbToHsl(r: number, g: number, b: number): { h: number; s: number; l: number } {
-  const rn = r / 255
-  const gn = g / 255
-  const bn = b / 255
-  const max = Math.max(rn, gn, bn)
-  const min = Math.min(rn, gn, bn)
-  const l = (max + min) / 2
-  let h = 0
-  let s = 0
-  if (max !== min) {
-    const d = max - min
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
-    if (max === rn) h = ((gn - bn) / d + (gn < bn ? 6 : 0)) * 60
-    else if (max === gn) h = ((bn - rn) / d + 2) * 60
-    else h = ((rn - gn) / d + 4) * 60
-  }
-  return { h, s: s * 100, l: l * 100 }
-}
-
-function toHex(c: Rgba): string {
-  const h = (n: number) => n.toString(16).padStart(2, '0')
-  const base = `#${h(c.r)}${h(c.g)}${h(c.b)}`
-  return props.showAlpha && c.a < 1 ? base + h(Math.round(c.a * 255)) : base
-}
-
-function toRgb(c: Rgba): string {
-  return props.showAlpha
-    ? `rgba(${c.r}, ${c.g}, ${c.b}, ${Number(c.a.toFixed(2))})`
-    : `rgb(${c.r}, ${c.g}, ${c.b})`
-}
-
-function toHsl(c: Rgba): string {
-  const { h, s, l } = rgbToHsl(c.r, c.g, c.b)
-  return props.showAlpha
-    ? `hsla(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(l)}%, ${Number(c.a.toFixed(2))})`
-    : `hsl(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(l)}%)`
-}
-
-function format(c: Rgba): string {
-  if (props.colorFormat === 'rgb') return toRgb(c)
-  if (props.colorFormat === 'hsl') return toHsl(c)
-  return toHex(c)
-}
-
 /* ---------------- 状态 ---------------- */
 
 const visible = ref(false)
@@ -204,14 +90,6 @@ function syncFromRgba(c: Rgba) {
   // 面板坐标：x = s/100，y = 1 - l/100
   panelX.value = Math.min(1, Math.max(0, s / 100))
   panelY.value = Math.min(1, Math.max(0, 1 - l / 100))
-}
-
-/** 由 hue + 面板坐标派生 rgb */
-function rgbFromHsv(h: number, x: number, y: number): Rgba {
-  const l = (1 - y) * 100
-  const s = x * 100
-  const { r, g, b } = hslToRgb(h, s / 100, l / 100)
-  return { r, g, b, a: draft.value.a }
 }
 
 syncFromRgba(rgba.value)
@@ -246,7 +124,7 @@ function onPanelDown(e: MouseEvent) {
   const { x, y } = ratio(e, panelRef.value)
   panelX.value = x
   panelY.value = y
-  draft.value = { ...rgbFromHsv(hue.value, x, y), a: draft.value.a }
+  draft.value = { ...rgbFromHsv(hue.value, x, y, draft.value.a), a: draft.value.a }
   emitActive()
   window.addEventListener('mousemove', onPanelMove)
   window.addEventListener('mouseup', onPanelUp)
@@ -256,7 +134,7 @@ function onPanelMove(e: MouseEvent) {
   const { x, y } = ratio(e, panelRef.value)
   panelX.value = x
   panelY.value = y
-  draft.value = { ...rgbFromHsv(hue.value, x, y), a: draft.value.a }
+  draft.value = { ...rgbFromHsv(hue.value, x, y, draft.value.a), a: draft.value.a }
   emitActive()
 }
 
@@ -274,7 +152,7 @@ function onHueDown(e: MouseEvent) {
 function moveHue(e: MouseEvent) {
   const { y } = ratio(e, hueRef.value)
   hue.value = y * 360
-  draft.value = { ...rgbFromHsv(hue.value, panelX.value, panelY.value), a: draft.value.a }
+  draft.value = { ...rgbFromHsv(hue.value, panelX.value, panelY.value, draft.value.a), a: draft.value.a }
   emitActive()
 }
 
@@ -301,7 +179,7 @@ function onAlphaUp() {
 }
 
 function emitActive() {
-  emit('active-change', format(draft.value))
+  emit('active-change', format(draft.value, props.colorFormat, props.showAlpha))
 }
 
 /** 输入框文本（HEX 手动输入） */
@@ -361,7 +239,7 @@ function closePanel() {
 
 /** 确认：把草稿写回 v-model */
 function commit() {
-  const str = format(draft.value)
+  const str = format(draft.value, props.colorFormat, props.showAlpha)
   rgba.value = { ...draft.value }
   emit('update:modelValue', str)
   emit('change', str)
@@ -399,7 +277,7 @@ const hueBg = computed(
 )
 
 defineExpose({
-  color: computed(() => format(rgba.value)),
+  color: computed(() => format(rgba.value, props.colorFormat, props.showAlpha)),
   show: openPanel,
   hide: closePanel,
   focus: () => rootRef.value?.querySelector<HTMLElement>('.dmk-color-picker__trigger')?.focus(),
