@@ -27,7 +27,37 @@
       "import": "./dist/index.js",
       "require": "./dist/index.umd.cjs"
     },
-    "./style.css": "./dist/style.css"
+    "./style.css": "./dist/style.css",
+    "./message": {
+      "types": "./dist/message.d.ts",
+      "import": "./dist/message.js",
+      "require": "./dist/message.cjs"
+    },
+    "./messagebox": {
+      "types": "./dist/messagebox.d.ts",
+      "import": "./dist/messagebox.js",
+      "require": "./dist/messagebox.cjs"
+    },
+    "./notification": {
+      "types": "./dist/notification.d.ts",
+      "import": "./dist/notification.js",
+      "require": "./dist/notification.cjs"
+    },
+    "./directives/*": {
+      "types": "./dist/directives/*.d.ts",
+      "import": "./dist/directives/*.js",
+      "require": "./dist/directives/*.cjs"
+    },
+    "./components/*": {
+      "types": "./dist/components/*.d.ts",
+      "import": "./dist/components/*.js",
+      "require": "./dist/components/*.cjs"
+    },
+    "./lib/*": {
+      "types": "./dist/lib/*.d.ts",
+      "import": "./dist/lib/*.js",
+      "require": "./dist/lib/*.cjs"
+    }
   },
   "files": [
     "dist",

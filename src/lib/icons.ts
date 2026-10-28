@@ -173,5 +173,41 @@ export const DmkIcons: Record<string, IconDefinition> = {
   Histogram_: { d: 'M3 3h2v18h16v2H3zm4 10h3v8H7zm5-4h3v12h-3zm5-6h3v18h-3z' }
 }
 
+/**
+ * 合并扩展图标集（lib/icons-extended.ts）。
+ *
+ * ⚠️ 「同名不覆盖」是硬约束：覆盖是图标库最隐蔽的 bug ——
+ *    用户引用的名字还在，画出来却变了，且不报错。
+ *    所以这里只补 base 里没有的条目；同名的**保留基础集的定义**并记录到
+ *    ICON_NAME_CONFLICTS，文档页可据此提示「该名字有多个来源」。
+ */
+import {
+  DmkIconsAI,
+  DmkIconsData,
+  DmkIconsEditor,
+  DmkIconsFeedback
+} from './icons-extended'
+
+/** 同名冲突记录：扩展集里与基础集重名的条目名 */
+export const ICON_NAME_CONFLICTS: string[] = []
+
+function mergeIconSet(
+  base: Record<string, IconDefinition>,
+  ext: Record<string, IconDefinition>
+): void {
+  for (const [name, def] of Object.entries(ext)) {
+    if (base[name]) {
+      ICON_NAME_CONFLICTS.push(name)
+      continue
+    }
+    base[name] = def
+  }
+}
+
+mergeIconSet(DmkIcons, DmkIconsAI)
+mergeIconSet(DmkIcons, DmkIconsData)
+mergeIconSet(DmkIcons, DmkIconsEditor)
+mergeIconSet(DmkIcons, DmkIconsFeedback)
+
 /** 图标名列表（文档站与 IDE 补全用） */
 export const DMK_ICON_NAMES = Object.keys(DmkIcons)

@@ -1,0 +1,190 @@
+/**
+ * dmk-ui 源码模式的样式入口。
+ *
+ * 为什么需要这个文件：
+ *   包的 `exports` 里 `./style.css` 指向构建产物 `dist/style.css`。
+ *   但站点（frontend-factory）为做组件级 tree-shake，把 `dmk-ui-vue` 别名到
+ *   **源码** `../dmk-ui/src/index.ts` —— 此时 `import 'dmk-ui-vue/style.css'`
+ *   若仍走 package.json 的 exports，会去 dist 里找（那是旧构建产物）。
+ *   本文件是源码侧的对等入口，内容与 src/styles/tokens.css 保持一致。
+ *
+ * ⚠️ 改令牌请改 src/styles/tokens.css，然后同步本文件（构建产物 dist/style.css
+ *    由 vite 从 SFC + tokens.css 合成，两条路径都要覆盖）。
+ */
+
+/* ==========================================================================
+   dmk-ui 设计令牌（语义层）—— 组件唯一色彩/形状来源
+   --------------------------------------------------------------------------
+   规则：
+   1. 组件样式只允许 var(--dmk-*)，禁止硬编码色值/圆角/阴影
+   2. 换肤 = 覆盖本层变量（如宿主站点把 --dmk-color-primary 映射到自家主题色）
+   3. 暗黑：[data-theme='dark'] 显式覆盖 + 系统偏好兜底
+   ========================================================================== */
+
+:root {
+  /* 表面 */
+  --dmk-color-bg: #f6f8fb;
+  --dmk-color-surface: #ffffff;
+  --dmk-color-surface-hover: #f2f5f9;
+  --dmk-color-surface-active: #e9eef5;
+
+  /* 文字 */
+  --dmk-color-text: #1a2332;
+  --dmk-color-text-secondary: #45536a;
+  --dmk-color-text-muted: #7a8798;
+  --dmk-color-text-inverse: #ffffff;
+  --dmk-color-on-primary: #ffffff;
+
+  /* 品牌 */
+  --dmk-color-primary: #4f6ef7;
+  --dmk-color-primary-hover: #3d5cf5;
+  --dmk-color-primary-active: #2f4ce0;
+  --dmk-color-primary-subtle: rgba(79, 110, 247, 0.1);
+
+  /* 状态 */
+  --dmk-color-success: #16a34a;
+  --dmk-color-success-subtle: rgba(22, 163, 74, 0.1);
+  --dmk-color-warning: #d97706;
+  --dmk-color-warning-subtle: rgba(217, 119, 6, 0.1);
+  --dmk-color-danger: #dc2626;
+  --dmk-color-danger-subtle: rgba(220, 38, 38, 0.1);
+  --dmk-color-info: #0284c7;
+  --dmk-color-info-subtle: rgba(2, 132, 199, 0.1);
+
+  /* 边框 */
+  --dmk-color-border: #e2e8f0;
+  --dmk-color-border-subtle: #edf1f7;
+  --dmk-color-border-strong: #cbd5e1;
+  --dmk-color-border-focus: var(--dmk-color-primary);
+
+  /* 遮罩 */
+  --dmk-color-mask: rgba(15, 23, 42, 0.45);
+
+  /* 形状 */
+  --dmk-radius-sm: 6px;
+  --dmk-radius-md: 8px;
+  --dmk-radius-lg: 12px;
+  --dmk-radius-xl: 16px;
+
+  /* 阴影 */
+  --dmk-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --dmk-shadow-md: 0 4px 16px rgba(15, 23, 42, 0.1);
+  --dmk-shadow-lg: 0 16px 48px rgba(15, 23, 42, 0.18);
+  --dmk-shadow-focus: 0 0 0 3px rgba(79, 110, 247, 0.28);
+  --dmk-shadow-primary: 0 4px 14px rgba(79, 110, 247, 0.35);
+
+  /* 尺寸（密度） */
+  --dmk-control-height: 36px;
+  --dmk-control-height-sm: 28px;
+  --dmk-control-height-lg: 44px;
+  --dmk-control-padding-x: 12px;
+
+  /* 字号 */
+  --dmk-font-sm: 12px;
+  --dmk-font-base: 14px;
+  --dmk-font-md: 15px;
+  --dmk-font-lg: 18px;
+
+  /* 间距 */
+  --dmk-space-xs: 4px;
+  --dmk-space-sm: 8px;
+  --dmk-space-md: 12px;
+  --dmk-space-lg: 16px;
+  --dmk-space-xl: 24px;
+
+  /* 动效 */
+  --dmk-duration-fast: 120ms;
+  --dmk-duration-base: 200ms;
+  --dmk-duration-slow: 300ms;
+  --dmk-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* 层级（teleport 浮层） */
+  --dmk-z-popup: 2000;
+  --dmk-z-modal: 2100;
+  --dmk-z-message: 3000;
+
+  /* 字体族（跟随宿主） */
+  --dmk-font-family: inherit;
+}
+
+/* 暗黑：显式声明优先 */
+:root[data-theme='dark'] {
+  --dmk-color-bg: #0b1220;
+  --dmk-color-surface: #111a2c;
+  --dmk-color-surface-hover: #1a2438;
+  --dmk-color-surface-active: #22304a;
+
+  --dmk-color-text: #e8eef8;
+  --dmk-color-text-secondary: #b6c2d4;
+  --dmk-color-text-muted: #7d8ba1;
+  --dmk-color-text-inverse: #0b1220;
+  --dmk-color-on-primary: #ffffff;
+
+  --dmk-color-primary: #7c93ff;
+  --dmk-color-primary-hover: #93a6ff;
+  --dmk-color-primary-active: #6478e8;
+  --dmk-color-primary-subtle: rgba(124, 147, 255, 0.16);
+
+  --dmk-color-success: #4ade80;
+  --dmk-color-success-subtle: rgba(74, 222, 128, 0.14);
+  --dmk-color-warning: #fbbf24;
+  --dmk-color-warning-subtle: rgba(251, 191, 36, 0.14);
+  --dmk-color-danger: #f87171;
+  --dmk-color-danger-subtle: rgba(248, 113, 113, 0.14);
+  --dmk-color-info: #38bdf8;
+  --dmk-color-info-subtle: rgba(56, 189, 248, 0.14);
+
+  --dmk-color-border: #24314a;
+  --dmk-color-border-subtle: #1b263c;
+  --dmk-color-border-strong: #35476a;
+  --dmk-color-border-focus: var(--dmk-color-primary);
+
+  --dmk-color-mask: rgba(2, 6, 16, 0.6);
+
+  --dmk-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --dmk-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
+  --dmk-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.55);
+  --dmk-shadow-focus: 0 0 0 3px rgba(124, 147, 255, 0.32);
+  --dmk-shadow-primary: 0 4px 14px rgba(124, 147, 255, 0.32);
+}
+
+/* 暗黑：未显式声明主题时跟随系统偏好 */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --dmk-color-bg: #0b1220;
+    --dmk-color-surface: #111a2c;
+    --dmk-color-surface-hover: #1a2438;
+    --dmk-color-surface-active: #22304a;
+
+    --dmk-color-text: #e8eef8;
+    --dmk-color-text-secondary: #b6c2d4;
+    --dmk-color-text-muted: #7d8ba1;
+    --dmk-color-text-inverse: #0b1220;
+
+    --dmk-color-primary: #7c93ff;
+    --dmk-color-primary-hover: #93a6ff;
+    --dmk-color-primary-active: #6478e8;
+    --dmk-color-primary-subtle: rgba(124, 147, 255, 0.16);
+
+    --dmk-color-success: #4ade80;
+    --dmk-color-success-subtle: rgba(74, 222, 128, 0.14);
+    --dmk-color-warning: #fbbf24;
+    --dmk-color-warning-subtle: rgba(251, 191, 36, 0.14);
+    --dmk-color-danger: #f87171;
+    --dmk-color-danger-subtle: rgba(248, 113, 113, 0.14);
+    --dmk-color-info: #38bdf8;
+    --dmk-color-info-subtle: rgba(56, 189, 248, 0.14);
+
+    --dmk-color-border: #24314a;
+    --dmk-color-border-subtle: #1b263c;
+    --dmk-color-border-strong: #35476a;
+
+    --dmk-color-mask: rgba(2, 6, 16, 0.6);
+
+    --dmk-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --dmk-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
+    --dmk-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.55);
+    --dmk-shadow-focus: 0 0 0 3px rgba(124, 147, 255, 0.32);
+    --dmk-shadow-primary: 0 4px 14px rgba(124, 147, 255, 0.32);
+  }
+}

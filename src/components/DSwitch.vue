@@ -95,8 +95,14 @@ function onToggle() {
   position: relative;
   display: inline-flex;
   align-items: center;
-  width: 44px;
-  height: 22px;
+  /* 轨道宽度用变量统一管理：滑块位移由 calc 推导，
+     改宽度时位移自动跟着走 —— 不会再出现「有文案时滑块卡在中间」。 */
+  --dmk-switch-track-w: 44px;
+  --dmk-switch-track-h: 22px;
+  --dmk-switch-knob-size: 18px;
+  --dmk-switch-pad: 2px;
+  width: var(--dmk-switch-track-w);
+  height: var(--dmk-switch-track-h);
   padding: 0 var(--dmk-space-xs);
   border-radius: var(--dmk-radius-lg);
   background: var(--dmk-color-border-strong);
@@ -111,21 +117,26 @@ function onToggle() {
 
 .dmk-switch__knob {
   position: absolute;
-  top: 2px;
-  left: 2px;
+  top: var(--dmk-switch-pad);
+  left: var(--dmk-switch-pad);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
+  width: var(--dmk-switch-knob-size);
+  height: var(--dmk-switch-knob-size);
   border-radius: 50%;
   background: var(--dmk-color-surface);
   box-shadow: var(--dmk-shadow-sm);
   transition: transform var(--dmk-duration-base) var(--dmk-ease);
 }
 
+/* 开启位移 = 轨道宽 - 两侧内边距 - 滑块宽（= 滑块右边缘贴到轨道右内缘） */
 .dmk-switch.is-checked .dmk-switch__knob {
-  transform: translateX(22px);
+  transform: translateX(
+    calc(
+      var(--dmk-switch-track-w) - var(--dmk-switch-pad) * 2 - var(--dmk-switch-knob-size)
+    )
+  );
 }
 
 .dmk-switch__spinner {
@@ -173,28 +184,21 @@ function onToggle() {
   display: inline-flex;
 }
 
-/* 尺寸 */
+/* 尺寸 —— 只改变量，位移由 calc 自动推导 */
 .dmk-switch.s-sm .dmk-switch__track {
-  width: 36px;
-  height: 18px;
-}
-
-.dmk-switch.s-sm .dmk-switch__knob {
-  width: 14px;
-  height: 14px;
-}
-
-.dmk-switch.s-sm.is-checked .dmk-switch__knob {
-  transform: translateX(18px);
+  --dmk-switch-track-w: 36px;
+  --dmk-switch-track-h: 18px;
+  --dmk-switch-knob-size: 14px;
+  --dmk-switch-pad: 2px;
 }
 
 /* 有文案时加宽轨道，避免与滑块重叠 */
 .dmk-switch:has(.dmk-switch__text) .dmk-switch__track {
-  width: 64px;
+  --dmk-switch-track-w: 64px;
 }
 
 .dmk-switch.s-sm:has(.dmk-switch__text) .dmk-switch__track {
-  width: 56px;
+  --dmk-switch-track-w: 56px;
 }
 
 @media (prefers-reduced-motion: reduce) {

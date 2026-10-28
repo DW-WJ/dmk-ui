@@ -102,6 +102,12 @@ import DDatePickerPanel from './components/DDatePickerPanel.vue'
 import DSelectV2 from './components/DSelectV2.vue'
 import DTableV2 from './components/DTableV2.vue'
 import DTreeV2 from './components/DTreeV2.vue'
+// —— AI 组件区（对话 / 推理 / 流式 / 提示词 / 模型选择）——
+import DChatMessage from './components/DChatMessage.vue'
+import DThinkingChain from './components/DThinkingChain.vue'
+import DPromptInput from './components/DPromptInput.vue'
+import DModelPicker from './components/DModelPicker.vue'
+import DStreamText from './components/DStreamText.vue'
 import { vInfiniteScroll } from './directives/infiniteScroll'
 import { Notification, showNotification } from './notification'
 import type { NotificationOptions, NotificationType } from './notification'
@@ -205,6 +211,11 @@ export {
   DSelectV2,
   DTableV2,
   DTreeV2,
+  DChatMessage,
+  DThinkingChain,
+  DPromptInput,
+  DModelPicker,
+  DStreamText,
   vInfiniteScroll,
   Notification,
   showNotification,
@@ -223,6 +234,23 @@ export type { SelectOption, SelectValue } from './lib/select'
 
 // 批 4 新组件的公共类型（业务侧可直接复用）
 export type { AutocompleteOption } from './components/DAutocomplete.vue'
+
+// —— AI 组件的公共类型（业务侧可直接复用，避免各项目重复声明）——
+export type { ThinkingStep } from './components/DThinkingChain.vue'
+export type { ModelOption, ModelGroup } from './components/DModelPicker.vue'
+
+// —— 预设色盘（业务方可直接用，也可传自己的 predefine）——
+export {
+  DmkColorPalettes,
+  DmkDefaultPredefine,
+  DmkColorLabels,
+  type ColorSwatch,
+  type ColorPalette
+} from './lib/palettes'
+
+// —— 图标集（按需引入具体名字 / 查全量清单）——
+export { DmkIcons, DMK_ICON_NAMES, ICON_NAME_CONFLICTS } from './lib/icons'
+export type { IconDefinition } from './lib/icons'
 export type { TransferItem } from './components/DTransfer.vue'
 export type { UploadFile } from './components/DUpload.vue'
 export type { DescriptionItem } from './components/DDescriptions.vue'
@@ -341,6 +369,12 @@ const components: [string, unknown][] = [
   ['DSelectV2', DSelectV2],
   ['DTableV2', DTableV2],
   ['DTreeV2', DTreeV2],
+  // —— AI 组件区 ——
+  ['DChatMessage', DChatMessage],
+  ['DThinkingChain', DThinkingChain],
+  ['DPromptInput', DPromptInput],
+  ['DModelPicker', DModelPicker],
+  ['DStreamText', DStreamText],
 ]
 
 export const DmkUI: Plugin = {

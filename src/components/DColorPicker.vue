@@ -22,6 +22,7 @@ import {
   type ColorFormat,
   type Rgba
 } from '../lib/color'
+import { DmkDefaultPredefine, DmkColorLabels } from '../lib/palettes'
 
 const props = withDefaults(
   defineProps<{
@@ -45,7 +46,9 @@ const props = withDefaults(
     size: 'default',
     showAlpha: false,
     colorFormat: 'hex',
-    predefine: () => [],
+    // 默认给一套语义化色盘（品牌 / 状态 / 中性 / 浅色）——
+    // 空数组会让用户打开面板看到一片空白，只能盲选。
+    predefine: () => [...DmkDefaultPredefine],
     popperClass: undefined,
     validateEvent: true,
     tabindex: 0,
@@ -202,6 +205,21 @@ function onHexInput(e: Event) {
   }
 }
 
+/** 系统取色器：调起 OS 选色对话框，可从屏幕任意位置取色（自由选色的兜底路径） */
+function onNativePick(e: Event) {
+  const v = (e.target as HTMLInputElement).value
+  if (!v) return
+  hexInput.value = v
+  draft.value = parseColor(v)
+  syncFromRgba(draft.value)
+  emitActive()
+}
+
+/** 预置色的中文名（用于悬停提示与无障碍标签） */
+function colorLabel(c: string): string {
+  return DmkColorLabels[c.toLowerCase()] ?? c
+}
+
 function onDocClick(e: MouseEvent) {
   if (!visible.value) return
   const target = e.target as Node
@@ -343,9 +361,18 @@ defineExpose({
           @input="onHexInput"
           @change="commit"
         />
+        <!-- 系统取色器：调起操作系统的选色对话框，可从屏幕任意位置取色 -->
+        <input
+          class="dmk-color-picker__native"
+          type="color"
+          :value="hexInput"
+          aria-label="系统取色器（自由选择任意颜色）"
+          @input="onNativePick"
+        />
         <span class="dmk-color-picker__format">{{ colorFormat.toUpperCase() }}</span>
       </div>
 
+      <!-- 预置色盘：默认语义化分组（品牌 / 中性 / 状态 / 浅色） -->
       <div v-if="predefine.length" class="dmk-color-picker__predefine">
         <button
           v-for="c in predefine"
@@ -353,7 +380,8 @@ defineExpose({
           type="button"
           class="dmk-color-picker__pre"
           :style="{ background: c }"
-          :aria-label="`选择颜色 ${c}`"
+          :title="colorLabel(c)"
+          :aria-label="`选择颜色 ${colorLabel(c)}`"
           @click="pickPredefine(c)"
         />
       </div>
@@ -533,6 +561,32 @@ defineExpose({
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 12px;
+}
+
+/* 系统取色器按钮：调起 OS 选色对话框（自由选色） */
+.dmk-color-picker__native {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  padding: 2px;
+  border: 1px solid var(--dmk-color-border);
+  border-radius: var(--dmk-radius-md);
+  background: var(--dmk-color-surface);
+  cursor: pointer;
+}
+
+.dmk-color-picker__native::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.dmk-color-picker__native::-webkit-color-swatch {
+  border: none;
+  border-radius: 4px;
+}
+
+.dmk-color-picker__native::-moz-color-swatch {
+  border: none;
+  border-radius: 4px;
 }
 
 .dmk-color-picker__pre {
