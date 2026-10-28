@@ -1,6 +1,6 @@
 {
   "name": "dmk-ui-vue",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "场景化 Vue3 组件库：面向后台管理 / 门户网站 / AI 产品的基础组件层，对标 Element Plus 全部 82 个组件。语义令牌驱动主题与暗黑模式，五风格 × 明暗 × 密度正交矩阵，四态统一（空/加载/错误/边界），零运行时依赖（仅 vue peer）。",
   "type": "module",
   "license": "MIT",
@@ -28,36 +28,7 @@
       "require": "./dist/index.umd.cjs"
     },
     "./style.css": "./dist/style.css",
-    "./message": {
-      "types": "./dist/message.d.ts",
-      "import": "./dist/message.js",
-      "require": "./dist/message.cjs"
-    },
-    "./messagebox": {
-      "types": "./dist/messagebox.d.ts",
-      "import": "./dist/messagebox.js",
-      "require": "./dist/messagebox.cjs"
-    },
-    "./notification": {
-      "types": "./dist/notification.d.ts",
-      "import": "./dist/notification.js",
-      "require": "./dist/notification.cjs"
-    },
-    "./directives/*": {
-      "types": "./dist/directives/*.d.ts",
-      "import": "./dist/directives/*.js",
-      "require": "./dist/directives/*.cjs"
-    },
-    "./components/*": {
-      "types": "./dist/components/*.d.ts",
-      "import": "./dist/components/*.js",
-      "require": "./dist/components/*.cjs"
-    },
-    "./lib/*": {
-      "types": "./dist/lib/*.d.ts",
-      "import": "./dist/lib/*.js",
-      "require": "./dist/lib/*.cjs"
-    }
+    "./package.json": "./package.json"
   },
   "files": [
     "dist",
