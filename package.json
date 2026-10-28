@@ -89,11 +89,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DW-WJ/dmk-ui-vue.git"
+    "url": "git+https://github.com/DW-WJ/dmk-ui.git"
   },
-  "homepage": "https://github.com/DW-WJ/dmk-ui-vue#readme",
+  "homepage": "https://github.com/DW-WJ/dmk-ui#readme",
   "bugs": {
-    "url": "https://github.com/DW-WJ/dmk-ui-vue/issues"
+    "url": "https://github.com/DW-WJ/dmk-ui/issues"
   },
   "engines": {
     "node": ">=18"
