@@ -1,7 +1,7 @@
 {
-  "name": "dmk-ui",
+  "name": "dmk-ui-vue",
   "version": "0.1.0",
-  "description": "场景化 Vue3 组件库：面向后台管理 / 门户网站 / AI 产品的基础组件层。语义令牌驱动主题与暗黑模式，四态统一（空/加载/错误/边界），零运行时依赖（仅 vue peer）。",
+  "description": "场景化 Vue3 组件库：面向后台管理 / 门户网站 / AI 产品的基础组件层，对标 Element Plus 全部 82 个组件。语义令牌驱动主题与暗黑模式，五风格 × 明暗 × 密度正交矩阵，四态统一（空/加载/错误/边界），零运行时依赖（仅 vue peer）。",
   "type": "module",
   "license": "MIT",
   "keywords": [
@@ -12,9 +12,11 @@
     "design-tokens",
     "dark-mode",
     "typescript",
+    "element-plus",
     "组件库",
     "后台管理",
-    "主题"
+    "主题",
+    "element"
   ],
   "main": "./dist/index.umd.cjs",
   "module": "./dist/index.js",
@@ -30,14 +32,17 @@
   "files": [
     "dist",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "sideEffects": [
     "**/*.css"
   ],
   "scripts": {
-    "build": "vite build && vue-tsc -p tsconfig.build.json",
-    "check": "vue-tsc --noEmit"
+    "build": "vite build && node node_modules/vue-tsc/bin/vue-tsc.js -p tsconfig.build.json",
+    "check": "node node_modules/vue-tsc/bin/vue-tsc.js --noEmit",
+    "test": "node scripts/verify-package.mjs",
+    "prepublishOnly": "npm run build && node scripts/verify-package.mjs"
   },
   "peerDependencies": {
     "vue": "^3.4.0"
@@ -48,5 +53,22 @@
     "vite": "^5.4.10",
     "vue": "^3.5.12",
     "vue-tsc": "^2.1.10"
+  },
+  "author": {
+    "name": "DuanMK"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DW-WJ/dmk-ui-vue.git"
+  },
+  "homepage": "https://github.com/DW-WJ/dmk-ui-vue#readme",
+  "bugs": {
+    "url": "https://github.com/DW-WJ/dmk-ui-vue/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

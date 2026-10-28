@@ -1,4 +1,4 @@
-# dmk-ui
+# dmk-ui-vue
 
 场景化 Vue3 组件库：面向**后台管理 / 门户网站 / AI 产品**的基础组件层。语义令牌驱动主题与暗黑模式，四态统一（空/加载/错误/边界）。
 
@@ -14,19 +14,19 @@
 ## 安装
 
 ```bash
-npm i dmk-ui
+npm i dmk-ui-vue
 ```
 
 ## 用法
 
 ```ts
 // 全量安装
-import DmkUI from 'dmk-ui'
-import 'dmk-ui/style.css'
+import DmkUI from 'dmk-ui-vue'
+import 'dmk-ui-vue/style.css'
 app.use(DmkUI) // 注册 DButton / DInput / ... 全部组件
 
 // 或按需引入
-import { DButton, Message } from 'dmk-ui'
+import { DButton, Message } from 'dmk-ui-vue'
 ```
 
 ```vue

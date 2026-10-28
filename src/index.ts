@@ -2,7 +2,7 @@
  * dmk-ui —— 场景化 Vue3 组件库入口。
  * 两种用法：
  *   1. 全量安装：app.use(DmkUI)（组件带 D 前缀注册）
- *   2. 按需引入：import { DButton, Message } from 'dmk-ui'
+ *   2. 按需引入：import { DButton, Message } from 'dmk-ui-vue'
  * 样式随入口自动引入；tree-shaking 依赖 sideEffects 配置（CSS 除外）。
  */
 import type { App, Plugin } from 'vue'
